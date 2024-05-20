@@ -30,7 +30,6 @@ func (mr *moviesRepository) GetAllMovies() (movies []domain.Movie, err error) {
 	if err != nil {
 		return nil, err
 	}
-
 	defer res.Body.Close()
 
 	return tmdbResponse.Results, nil

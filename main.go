@@ -18,7 +18,7 @@ func main() {
 
 	address := "localhost:8080"
 	fmt.Printf("Server started at %s \n", address)
-	
+
 	errServe := http.ListenAndServe(address, r)
 	if errServe != nil {
 		panic(errServe)

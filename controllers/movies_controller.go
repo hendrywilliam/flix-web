@@ -18,10 +18,17 @@ func (mc *MoviesController) GetMovies(w http.ResponseWriter, r *http.Request, _ 
 	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		json.NewEncoder(w).Encode(domain.ErrorResponse{
+			Message: "Internal Server Error",
+			Code:    http.StatusInternalServerError,
+		})
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(movies)
+	json.NewEncoder(w).Encode(domain.SuccessResponse[[]domain.Movie]{
+		Message: "Successfully fetched movies.",
+		Code:    http.StatusOK,
+		Data:    movies,
+	})
 }
