@@ -5,29 +5,29 @@ import (
 	"os"
 	"sync"
 
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 var (
 	once       sync.Once
-	dbInstance *sqlx.DB
+	dbInstance *gorm.DB
 )
 
-func NewDatabase() *sqlx.DB {
+func NewDatabase() *gorm.DB {
 	once.Do(func() {
-		db, err := sqlx.Connect("postgres", fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s",
+		dbCredentials := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s",
 			os.Getenv("DB_USERNAME"),
 			os.Getenv("DB_PASSWORD"),
 			os.Getenv("DB_HOST"),
 			os.Getenv("DB_PORT"),
 			os.Getenv("DB_NAME"),
-		))
+		)
+		db, err := gorm.Open(postgres.Open(dbCredentials), &gorm.Config{})
 		if err != nil {
 			panic(err)
 		}
 		dbInstance = db
 	})
-
 	return dbInstance
 }
