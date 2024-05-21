@@ -2,8 +2,10 @@ package db
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"sync"
+	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -16,7 +18,7 @@ var (
 
 func NewDatabase() *gorm.DB {
 	once.Do(func() {
-		dbCredentials := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s",
+		dbCredentials := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Shanghai",
 			os.Getenv("DB_USERNAME"),
 			os.Getenv("DB_PASSWORD"),
 			os.Getenv("DB_HOST"),
@@ -27,7 +29,13 @@ func NewDatabase() *gorm.DB {
 		if err != nil {
 			panic(err)
 		}
+		start := time.Now()
+		db.AutoMigrate(&User{}, &Profile{}, &WatchingList{})
+		elapsed := time.Since(start)
+		log.Printf("Time elapsed: %s", elapsed)
+
 		dbInstance = db
 	})
+
 	return dbInstance
 }

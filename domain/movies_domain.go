@@ -30,6 +30,13 @@ type TmdbMovieResponse struct {
 	Total_Results int     `json:"total_results"`
 }
 
+type Genre struct {
+	ID int `json:"id"`
+}
+
+type TmdbGenreResponse struct {
+}
+
 type MoviesRepository interface {
 	GetAllMovies() ([]Movie, error)
 }

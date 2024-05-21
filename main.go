@@ -1,6 +1,7 @@
 package main
 
 import (
+	// "flix/db"
 	"flix/routes"
 	"fmt"
 	"net/http"
@@ -13,6 +14,8 @@ func main() {
 	if env_err != nil {
 		panic(env_err)
 	}
+
+	// db.NewDatabase()
 
 	r := routes.RoutesCore()
 
