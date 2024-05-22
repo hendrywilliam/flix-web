@@ -17,7 +17,7 @@ func NewMoviesCoreRepository() domain.MoviesRepository {
 
 func (mr *moviesRepository) GetAllMovies() (movies []domain.Movie, err error) {
 	apiKey := os.Getenv("TMDB_API_KEY")
-	var tmdbResponse domain.TmdbMovieResponse
+	var response domain.TmdbMovieResponse
 	client := &http.Client{}
 
 	req, _ := http.NewRequest("GET", "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1", nil)
@@ -25,12 +25,32 @@ func (mr *moviesRepository) GetAllMovies() (movies []domain.Movie, err error) {
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", apiKey))
 
 	res, _ := client.Do(req)
-	err = json.NewDecoder(res.Body).Decode(&tmdbResponse)
+	err = json.NewDecoder(res.Body).Decode(&response)
 
 	if err != nil {
 		return nil, err
 	}
 	defer res.Body.Close()
 
-	return tmdbResponse.Results, nil
+	return response.Results, nil
+}
+
+func (mr *moviesRepository) GetMovieGenres() (movies []domain.Genre, err error) {
+	apiKey := os.Getenv("TMDB_API_KEY")
+	var response domain.TmdbGenreResponse
+	client := &http.Client{}
+
+	req, _ := http.NewRequest("GET", "https://api.themoviedb.org/3/genre/movie/list?language=en", nil)
+	req.Header.Add("accept", "application/json")
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", apiKey))
+
+	res, _ := client.Do(req)
+	err = json.NewDecoder(res.Body).Decode(&response)
+
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	return response.Genres, nil
 }

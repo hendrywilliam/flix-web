@@ -13,3 +13,7 @@ func NewMoviesUseCase(moviesRepository domain.MoviesRepository) domain.MoviesUse
 func (mu *moviesUsecase) GetAllMovies() (movies []domain.Movie, err error) {
 	return mu.moviesRepository.GetAllMovies()
 }
+
+func (mu *moviesUsecase) GetMovieGenres() (genre []domain.Genre, err error) {
+	return mu.moviesRepository.GetMovieGenres()
+}

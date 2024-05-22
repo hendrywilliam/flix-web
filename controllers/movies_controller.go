@@ -1,34 +1,49 @@
 package controllers
 
 import (
-	"encoding/json"
 	"flix/domain"
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/gin-gonic/gin"
 )
 
 type MoviesController struct {
 	MoviesUsecase domain.MoviesUsecase
 }
 
-func (mc *MoviesController) GetMovies(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (mc *MoviesController) GetMovies(c *gin.Context) {
 	movies, err := mc.MoviesUsecase.GetAllMovies()
 
-	w.Header().Set("Content-Type", "application/json")
+	c.Header("Content-Type", "application/json")
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(domain.ErrorResponse{
+		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{
 			Message: "Internal Server Error",
 			Code:    http.StatusInternalServerError,
 		})
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(domain.SuccessResponse[[]domain.Movie]{
+	c.JSON(http.StatusOK, domain.SuccessResponse[[]domain.Movie]{
 		Message: "Successfully fetched movies.",
 		Code:    http.StatusOK,
 		Data:    movies,
+	})
+}
+
+func (mc *MoviesController) GetMovieGenres(c *gin.Context) {
+	genres, err := mc.MoviesUsecase.GetMovieGenres()
+
+	c.Header("Content-Type", "application/json")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{
+			Message: "Internal Server Error",
+			Code:    http.StatusInternalServerError,
+		})
+	}
+
+	c.JSON(http.StatusOK, domain.SuccessResponse[[]domain.Genre]{
+		Message: "Successfully fetched movie genres.",
+		Code:    http.StatusOK,
+		Data:    genres,
 	})
 }

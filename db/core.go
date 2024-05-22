@@ -32,7 +32,7 @@ func NewDatabase() *gorm.DB {
 		start := time.Now()
 		db.AutoMigrate(&User{}, &Profile{}, &WatchingList{})
 		elapsed := time.Since(start)
-		log.Printf("Time elapsed: %s", elapsed)
+		log.Printf("Migration succeeded. Time elapsed: %s", elapsed)
 
 		dbInstance = db
 	})

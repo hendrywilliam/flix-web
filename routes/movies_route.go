@@ -3,15 +3,17 @@ package routes
 import (
 	"flix/controllers"
 	"flix/repository"
+	"flix/usecase"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/gin-gonic/gin"
 )
 
-func NewMovieRoute(router *httprouter.Router) {
+func NewMovieRoute(r *gin.Engine) {
 	mr := repository.NewMoviesCoreRepository()
 	mc := &controllers.MoviesController{
-		MoviesUsecase: mr,
+		MoviesUsecase: usecase.NewMoviesUseCase(mr),
 	}
 
-	router.GET("/movies", mc.GetMovies)
+	r.GET("/movies", mc.GetMovies)
+	r.GET("/movie-genres", mc.GetMovieGenres)
 }

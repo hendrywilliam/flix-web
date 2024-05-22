@@ -4,8 +4,9 @@ import (
 	// "flix/db"
 	"flix/routes"
 	"fmt"
-	"net/http"
+	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
@@ -15,15 +16,15 @@ func main() {
 		panic(env_err)
 	}
 
-	// db.NewDatabase()
+	mode := os.Getenv("GIN_MODE")
+	if mode == "release" {
+		gin.SetMode(gin.ReleaseMode)
+	}
 
+	// db.NewDatabase()
 	r := routes.RoutesCore()
 
 	address := "localhost:8080"
 	fmt.Printf("Server started at %s \n", address)
-
-	errServe := http.ListenAndServe(address, r)
-	if errServe != nil {
-		panic(errServe)
-	}
+	r.Run(address)
 }

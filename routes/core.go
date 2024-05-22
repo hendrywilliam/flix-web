@@ -1,11 +1,11 @@
 package routes
 
 import (
-	"github.com/julienschmidt/httprouter"
+	"github.com/gin-gonic/gin"
 )
 
-func RoutesCore() *httprouter.Router {
-	r := httprouter.New()
+func RoutesCore() *gin.Engine {
+	r := gin.Default()
 
 	NewMovieRoute(r)
 	return r
