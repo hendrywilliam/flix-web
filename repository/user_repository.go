@@ -21,7 +21,7 @@ func (ur *userRepository) Create(user *db.User) *gorm.DB {
 }
 
 func (ur *userRepository) Delete(user *db.User) *gorm.DB {
-	return ur.database.Where("name = ?", "jinzhu").Delete(&user)
+	return ur.database.Where("email = ?", user.Email).Delete(&user)
 }
 
 func (ur *userRepository) Update(user *db.User, column string, value any) *gorm.DB {
