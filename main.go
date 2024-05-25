@@ -1,7 +1,7 @@
 package main
 
 import (
-	// "flix/db"
+	"flix/db"
 	"flix/routes"
 	"fmt"
 	"os"
@@ -21,8 +21,8 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	// db.NewDatabase()
-	r := routes.RoutesCore()
+	db := db.NewDatabase()
+	r := routes.RoutesCore(db)
 
 	address := "localhost:8080"
 	fmt.Printf("Server started at %s \n", address)

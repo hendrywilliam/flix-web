@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewMovieRoute(r *gin.Engine) {
+func NewMovieRoute(r *gin.RouterGroup) {
 	mr := repository.NewMoviesCoreRepository()
 	mc := &controllers.MoviesController{
 		MoviesUsecase: usecase.NewMoviesUseCase(mr),
