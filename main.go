@@ -22,6 +22,12 @@ func main() {
 	}
 
 	db := db.NewDatabase()
+
+	defer func() {
+		// Clean up
+		db, _ := db.DB()
+		db.Close()
+	}()
 	r := routes.RoutesCore(db)
 
 	address := "localhost:8080"

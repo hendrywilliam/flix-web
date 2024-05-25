@@ -40,7 +40,7 @@ func RoutesCore(db *gorm.DB) *gin.Engine {
 			return
 		}
 
-		c.JSON(http.StatusBadRequest, gin.H{"error": errors.New("password not match.")})
+		c.JSON(http.StatusBadRequest, gin.H{"error": errors.New("password does not match")})
 	})
 	return r
 }

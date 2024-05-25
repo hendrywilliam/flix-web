@@ -12,7 +12,7 @@ import (
 func NewSignupRoute(r *gin.RouterGroup, db *gorm.DB) {
 	ur := repository.NewUserRepository(db)
 	uc := &controllers.SignupController{
-		SignupUsecase: usecase.NewSignupUsecase(ur),
+		UserUsecase: usecase.NewSignupUsecase(ur),
 	}
 
 	r.POST("/sign-up", uc.Signup)

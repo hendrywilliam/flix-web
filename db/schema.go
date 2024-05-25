@@ -9,7 +9,7 @@ type User struct {
 	gorm.Model
 	Email                string `gorm:"unique;column:email"`
 	Password             string
-	StripeSubscriptionID string    `gorm:"unique;column:stripe_subscription_id"`
+	StripeSubscriptionID string    `column:stripe_subscription_id"`
 	StripeCustomerID     string    `gorm:"unique;column:stripe_customer_id"`
 	Profile              []Profile `gorm:"foreignKey:UserID"`
 }
